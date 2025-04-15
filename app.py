@@ -3,8 +3,8 @@ from flask_cors import CORS, cross_origin
 from flask import Flask, render_template, request, jsonify
 
 # Load trained model and vectorizer
-model = joblib.load('models/baseline_spam_detector.pkl')  # Make sure this file exists
-vectorizer = joblib.load('models/tfidf_vectorizer.pkl')  # Load saved vectorizer used for training
+model = joblib.load('/models/baseline_spam_detector.pkl')  # Make sure this file exists
+vectorizer = joblib.load('/models/tfidf_vectorizer.pkl')  # Load saved vectorizer used for training
 
 app = Flask(__name__)
 CORS(app, supports_credentials=True)# Enable CORS globally
