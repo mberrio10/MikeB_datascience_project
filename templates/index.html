@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>URL Spam Detector</title>
+    <link rel="stylesheet" href="/static/styles.css">
+</head>
+<body>
+    <div class="container">
+        <h1>URL Spam Detector</h1>
+        <input type="text" id="urlInput" placeholder="Enter a URL">
+        <button onclick="checkSpam()">Check</button>
+        <h2 id="result"></h2>
+    </div>
+
+    <script>
+        async function checkSpam() {
+            console.log("Button was clicked!");            
+            let url = document.getElementById('urlInput').value;
+            console.log("URL Input:", url);
+
+            try {                
+                let response = await fetch('https://studious-journey-rr57gxgr4gg2ww74-5000.app.github.dev/predict', {
+                    method: 'POST',
+                    mode: 'cors',  // Important for cross-origin requests
+                    headers: { 'Content-Type': 'application/json', 'Access-Control-Allow-Origin': '*' },
+                    body: JSON.stringify({ url: url })
+                });
+
+                console.log("Raw Response:", response);
+                
+                
+                if (!response.ok) throw new Error(`HTTP Error: ${response.status}`)
+
+                let data = await response.json();
+                console.log("Server Response:", data);
+                
+                let resultElement = document.getElementById('result');
+    
+                // Show dynamic colors based on the result
+                resultElement.innerText = "Prediction: " + data.prediction;
+                resultElement.style.color = data.prediction === "Spam" ? "#e74c3c" : "#2ecc71"; 
+            } catch (error) {
+                console.error("Fetch Error:", error);
+                document.getElementById('result').innerText = "Error fetching prediction.";
+            }
+        }
+    </script>
+</body>
+</html>
